@@ -6,9 +6,10 @@ internal class Program
     {
         while (true)
         {
-            
-            for (int i = 0; i < philosophers.Count; i++)
-            {
+            Random random = new Random();
+            int i = random.Next(0, 4); 
+            //for (int i = 0; i < philosophers.Count; i++)
+            //{
                 if (philosophers[i] != States.EATING)
                 {
                     Pickup(i);
@@ -19,7 +20,7 @@ internal class Program
                     
                 }
                 Task.Delay(2000).Wait();
-            }
+            //}
         }
 
     }
@@ -30,7 +31,7 @@ internal class Program
         if (philosophers[i] == States.HUNGRY && CanEat(i))
         {
             philosophers[i] = States.EATING;
-            Console.WriteLine($"Philosopher {i} eating delicious rice");
+            Console.WriteLine($"Philosopher {i} has both chopsticks and is eating delicious rice");
         }
         else
         {
@@ -41,7 +42,7 @@ internal class Program
     private static void Putdown(int i)
     {
         philosophers[i] = States.THINKING;
-        Console.WriteLine($"Philospher {i} is thinking");
+        Console.WriteLine($"Philospher {i} puts down both chopsticks and is now thinking");
         Task.Delay(1000).Wait();
         Pickup((i + 1) % 5);
         Task.Delay(1000).Wait();
@@ -50,36 +51,36 @@ internal class Program
 
     public static bool CanEat(int i)
     {
-        if(LeftForkAvailable(i))
+        if(LeftChopstickAvailable(i))
         {
-            if (RightForkAvailable(i))
+            if (RightChopstickAvailable(i))
             {
                 return true;
             }
-            Console.WriteLine($"Philospher {i} put down left fork");
+            Console.WriteLine($"Philospher {i} put down left chopstick");
             return false;
         }
         return false;
     }
 
-    private static bool LeftForkAvailable(int i)
+    private static bool LeftChopstickAvailable(int i)
     {
-        if(philosophers[(i + 4) % 5] != States.EATING)
+        if(philosophers[(i + 1) % 5] != States.EATING)
         {
-            Console.WriteLine($"Philosopher {i} picked up the left fork");
+            Console.WriteLine($"Philosopher {i} picked up the left chopstick");
             return true;
         }
-        Console.WriteLine($"Left fork not available for philosopher {i}");
+        Console.WriteLine($"Left chopstick not available for philosopher {i}");
         return false;
     }
-    private static bool RightForkAvailable(int i)
+    private static bool RightChopstickAvailable(int i)
     {
-        if (philosophers[(i + 1) % 5] != States.EATING)
+        if (philosophers[(i + 4) % 5] != States.EATING)
         {
-            Console.WriteLine($"Philosopher {i} picked up the right fork");
+            Console.WriteLine($"Philosopher {i} picked up the right chopstick");
             return true;
         }
-        Console.WriteLine($"Right fork not available for philosopher {i}");
+        Console.WriteLine($"Right chopstick not available for philosopher {i}");
         return false;
     }
 
